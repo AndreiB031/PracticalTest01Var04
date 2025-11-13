@@ -22,6 +22,7 @@ class PracticalTest01Var04MainActivity : AppCompatActivity() {
     private lateinit var bottomCheck: CheckBox
     private lateinit var show: String
     private lateinit var out: TextView
+    private lateinit var second: Button
 
 
 
@@ -36,6 +37,7 @@ class PracticalTest01Var04MainActivity : AppCompatActivity() {
         topCheck = findViewById(R.id.top_check) as CheckBox
         bottomCheck = findViewById(R.id.bottom_check) as CheckBox
         out = findViewById(R.id.out) as TextView
+        second = findViewById(R.id.navigate_button) as Button
 
         display.setOnClickListener {
             show = ""
@@ -53,7 +55,21 @@ class PracticalTest01Var04MainActivity : AppCompatActivity() {
             }
             out.text = show
         }
+
+        second.setOnClickListener {
+            val intent = Intent(this, PracticalTest01Var04SecondaryActivity::class.java)
+            intent.putExtra("top_text", topText.text)
+            intent.putExtra("bottom_text", bottomText.text)
+            startActivityForResult(intent, 1)
+        }
     }
+
+
+
+
+
+
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -65,5 +81,17 @@ class PracticalTest01Var04MainActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         topText.text = savedInstanceState.getCharSequence("top_text").toString()
         bottomText.text = savedInstanceState.getCharSequence("bottom_text").toString()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            when (resultCode) {
+                Activity.RESULT_OK ->
+                    Toast.makeText(this, "OK pressed in secondary activity", Toast.LENGTH_SHORT).show()
+                Activity.RESULT_CANCELED ->
+                    Toast.makeText(this, "Cancel pressed in secondary activity", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
